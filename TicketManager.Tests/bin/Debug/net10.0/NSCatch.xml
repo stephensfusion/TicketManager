@@ -1,0 +1,523 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NSCatch</name>
+    </assembly>
+    <members>
+        <member name="T:NSCatch.Configuration.LocalCacheOptions">
+            <summary>
+            Configuration options for local (in-memory) caching.
+            </summary>
+        </member>
+        <member name="P:NSCatch.Configuration.LocalCacheOptions.DefaultExpiration">
+            <inheritdoc />
+        </member>
+        <member name="P:NSCatch.Configuration.LocalCacheOptions.SizeLimit">
+            <summary>
+            Maximum size limit for the local cache.
+            </summary>
+        </member>
+        <member name="P:NSCatch.Configuration.LocalCacheOptions.CompactionPercentage">
+            <summary>
+            Compaction percentage when size limit is reached.
+            </summary>
+        </member>
+        <member name="P:NSCatch.Configuration.LocalCacheOptions.ExpirationScanFrequency">
+            <summary>
+            Scan frequency for expired items cleanup.
+            </summary>
+        </member>
+        <member name="M:NSCatch.Configuration.LocalCacheOptions.IsValid">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Configuration.LocalCacheOptions.GetDescription">
+            <inheritdoc />
+        </member>
+        <member name="T:NSCatch.Configuration.RedisCacheOptions">
+            <summary>
+            Configuration options for Redis caching.
+            </summary>
+        </member>
+        <member name="P:NSCatch.Configuration.RedisCacheOptions.DefaultExpiration">
+            <inheritdoc />
+        </member>
+        <member name="P:NSCatch.Configuration.RedisCacheOptions.ConnectionString">
+            <summary>
+            Redis connection string.
+            </summary>
+        </member>
+        <member name="P:NSCatch.Configuration.RedisCacheOptions.Database">
+            <summary>
+            Redis database number to use.
+            </summary>
+        </member>
+        <member name="P:NSCatch.Configuration.RedisCacheOptions.KeyPrefix">
+            <summary>
+            Key prefix for all cache entries.
+            </summary>
+        </member>
+        <member name="P:NSCatch.Configuration.RedisCacheOptions.ConnectTimeout">
+            <summary>
+            Connection timeout in milliseconds.
+            </summary>
+        </member>
+        <member name="P:NSCatch.Configuration.RedisCacheOptions.SyncTimeout">
+            <summary>
+            Sync timeout in milliseconds.
+            </summary>
+        </member>
+        <member name="P:NSCatch.Configuration.RedisCacheOptions.AllowAdmin">
+            <summary>
+            Whether to allow admin operations.
+            </summary>
+        </member>
+        <member name="P:NSCatch.Configuration.RedisCacheOptions.AbortOnConnectFail">
+            <summary>
+            Whether to abort connection on connect failure.
+            </summary>
+        </member>
+        <member name="P:NSCatch.Configuration.RedisCacheOptions.ConnectRetry">
+            <summary>
+            Number of connection retry attempts.
+            </summary>
+        </member>
+        <member name="M:NSCatch.Configuration.RedisCacheOptions.IsValid">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Configuration.RedisCacheOptions.GetDescription">
+            <inheritdoc />
+        </member>
+        <member name="T:NSCatch.Configuration.HybridCacheOptions">
+            <summary>
+            Configuration options for hybrid caching (local + Redis).
+            </summary>
+        </member>
+        <member name="P:NSCatch.Configuration.HybridCacheOptions.DefaultExpiration">
+            <inheritdoc />
+        </member>
+        <member name="P:NSCatch.Configuration.HybridCacheOptions.Local">
+            <summary>
+            Local cache configuration for the hybrid setup.
+            </summary>
+        </member>
+        <member name="P:NSCatch.Configuration.HybridCacheOptions.Redis">
+            <summary>
+            Redis cache configuration for the hybrid setup.
+            </summary>
+        </member>
+        <member name="P:NSCatch.Configuration.HybridCacheOptions.LocalCacheExpiration">
+            <summary>
+            Expiration time for items in the local cache layer.
+            Items will be kept in local cache for this duration before checking Redis.
+            </summary>
+        </member>
+        <member name="P:NSCatch.Configuration.HybridCacheOptions.SyncOnStartup">
+            <summary>
+            Whether to sync local cache with Redis on startup.
+            </summary>
+        </member>
+        <member name="P:NSCatch.Configuration.HybridCacheOptions.WriteThrough">
+            <summary>
+            Whether to use write-through caching (write to both local and Redis simultaneously).
+            </summary>
+        </member>
+        <member name="P:NSCatch.Configuration.HybridCacheOptions.WriteBehind">
+            <summary>
+            Whether to use write-behind caching (write to local immediately, Redis asynchronously).
+            </summary>
+        </member>
+        <member name="P:NSCatch.Configuration.HybridCacheOptions.WriteBehindInterval">
+            <summary>
+            Interval for write-behind synchronization with Redis.
+            </summary>
+        </member>
+        <member name="M:NSCatch.Configuration.HybridCacheOptions.IsValid">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Configuration.HybridCacheOptions.GetDescription">
+            <inheritdoc />
+        </member>
+        <member name="T:NSCatch.Enumerations.CacheProviderType">
+            <summary>
+            Specifies the type of cache provider to use.
+            </summary>
+        </member>
+        <member name="F:NSCatch.Enumerations.CacheProviderType.Local">
+            <summary>
+            In-memory cache for single instance applications.
+            </summary>
+        </member>
+        <member name="F:NSCatch.Enumerations.CacheProviderType.Redis">
+            <summary>
+            Distributed Redis cache for scalable applications.
+            </summary>
+        </member>
+        <member name="F:NSCatch.Enumerations.CacheProviderType.Hybrid">
+            <summary>
+            Hybrid cache that tries local first, then Redis.
+            </summary>
+        </member>
+        <member name="T:NSCatch.Extensions.ServiceCollectionExtensions">
+            <summary>
+            Extension methods for configuring NSCatch cache services.
+            </summary>
+        </member>
+        <member name="M:NSCatch.Extensions.ServiceCollectionExtensions.AddNSCache(Microsoft.Extensions.DependencyInjection.IServiceCollection,NSCatch.Interfaces.ICatchOption,System.String)">
+            <summary>
+            Adds NSCatch cache services using a specific ICatchOption implementation.
+            The cache type is automatically determined by the ICatchOption type.
+            </summary>
+            <param name="services">The service collection.</param>
+            <param name="cacheOption">The cache option instance implementing ICatchOption.</param>
+            <param name="cacheKey">The unique cache key for this cache instance (used for service isolation).</param>
+            <returns>The service collection for chaining.</returns>
+        </member>
+        <member name="M:NSCatch.Extensions.ServiceCollectionExtensions.RegisterCoreServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,NSCatch.Interfaces.ICatchOption,System.String)">
+            <summary>
+            Registers core cache services based on the specific ICatchOption type.
+            </summary>
+            <param name="services">The service collection.</param>
+            <param name="cacheOption">The cache option to configure services for.</param>
+            <param name="cacheKey">The unique cache key for this cache instance.</param>
+        </member>
+        <member name="M:NSCatch.Extensions.ServiceCollectionExtensions.CreateCacheManager(System.IServiceProvider,NSCatch.Interfaces.ICatchOption)">
+            <summary>
+            Creates the appropriate cache manager based on the cache option type.
+            </summary>
+            <param name="provider">The service provider.</param>
+            <param name="cacheOption">The cache option.</param>
+            <returns>The configured cache manager.</returns>
+        </member>
+        <member name="M:NSCatch.Extensions.ServiceCollectionExtensions.CreateLocalCacheManager(System.IServiceProvider,NSCatch.Configuration.LocalCacheOptions)">
+            <summary>
+            Creates a local cache manager.
+            </summary>
+        </member>
+        <member name="M:NSCatch.Extensions.ServiceCollectionExtensions.CreateRedisCacheManager(System.IServiceProvider,NSCatch.Configuration.RedisCacheOptions)">
+            <summary>
+            Creates a Redis cache manager.
+            </summary>
+        </member>
+        <member name="M:NSCatch.Extensions.ServiceCollectionExtensions.CreateHybridCacheManager(System.IServiceProvider,NSCatch.Configuration.HybridCacheOptions)">
+            <summary>
+            Creates a hybrid cache manager.
+            </summary>
+        </member>
+        <member name="M:NSCatch.Extensions.ServiceCollectionExtensions.RegisterLocalCacheServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Registers services specific to local caching.
+            </summary>
+            <param name="services">The service collection.</param>
+        </member>
+        <member name="M:NSCatch.Extensions.ServiceCollectionExtensions.RegisterRedisCacheServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,NSCatch.Configuration.RedisCacheOptions)">
+            <summary>
+            Registers services specific to Redis caching.
+            </summary>
+            <param name="services">The service collection.</param>
+            <param name="redisOptions">The Redis cache options.</param>
+        </member>
+        <member name="M:NSCatch.Extensions.ServiceCollectionExtensions.RegisterHybridCacheServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,NSCatch.Configuration.HybridCacheOptions)">
+            <summary>
+            Registers services specific to hybrid caching.
+            </summary>
+            <param name="services">The service collection.</param>
+            <param name="hybridOptions">The hybrid cache options.</param>
+        </member>
+        <member name="T:NSCatch.Implementations.CacheKeyBuilder">
+            <summary>
+            Implementation of cache key builder for type-safe cache key generation.
+            </summary>
+        </member>
+        <member name="M:NSCatch.Implementations.CacheKeyBuilder.BuildKey``1(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.CacheKeyBuilder.BuildKey(System.String,System.Object[])">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.CacheKeyBuilder.BuildPattern``1">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.CacheKeyBuilder.BuildPattern(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:NSCatch.Implementations.HybridCacheManager">
+            <summary>
+            Hybrid cache manager that combines local and Redis caching for optimal performance.
+            </summary>
+        </member>
+        <member name="M:NSCatch.Implementations.HybridCacheManager.GetAsync``1(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.HybridCacheManager.SetAsync``1(System.String,``0,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.HybridCacheManager.RemoveAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.HybridCacheManager.RemoveByPatternAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.HybridCacheManager.ExistsAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.HybridCacheManager.ClearAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.HybridCacheManager.GetOrSetAsync``1(System.String,System.Func{System.Threading.Tasks.Task{``0}},System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.HybridCacheManager.ProcessPendingOperations(System.Object)">
+            <summary>
+            Processes pending write-behind operations.
+            </summary>
+            <param name="state">Timer state (not used).</param>
+        </member>
+        <member name="M:NSCatch.Implementations.HybridCacheManager.ThrowIfDisposed">
+            <summary>
+            Throws an exception if the object has been disposed.
+            </summary>
+        </member>
+        <member name="M:NSCatch.Implementations.HybridCacheManager.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:NSCatch.Implementations.HybridCacheManager.CacheOperation">
+            <summary>
+            Represents a pending cache operation for write-behind processing.
+            </summary>
+        </member>
+        <member name="T:NSCatch.Implementations.HybridCacheManager.CacheOperationType">
+            <summary>
+            Types of cache operations.
+            </summary>
+        </member>
+        <member name="T:NSCatch.Implementations.LocalCacheManager">
+            <summary>
+            Local in-memory cache manager implementation.
+            </summary>
+        </member>
+        <member name="M:NSCatch.Implementations.LocalCacheManager.GetAsync``1(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.LocalCacheManager.SetAsync``1(System.String,``0,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.LocalCacheManager.RemoveAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.LocalCacheManager.RemoveByPatternAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.LocalCacheManager.ExistsAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.LocalCacheManager.ClearAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.LocalCacheManager.GetOrSetAsync``1(System.String,System.Func{System.Threading.Tasks.Task{``0}},System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.LocalCacheManager.EstimateSize``1(``0)">
+            <summary>
+            Estimates the size of an object for memory cache sizing.
+            </summary>
+            <param name="value">The object to estimate size for.</param>
+            <returns>Estimated size in bytes.</returns>
+        </member>
+        <member name="M:NSCatch.Implementations.LocalCacheManager.ThrowIfDisposed">
+            <summary>
+            Throws an exception if the object has been disposed.
+            </summary>
+        </member>
+        <member name="M:NSCatch.Implementations.LocalCacheManager.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:NSCatch.Implementations.RedisCacheManager">
+            <summary>
+            Redis distributed cache manager implementation.
+            </summary>
+        </member>
+        <member name="M:NSCatch.Implementations.RedisCacheManager.GetAsync``1(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.RedisCacheManager.SetAsync``1(System.String,``0,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.RedisCacheManager.RemoveAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.RedisCacheManager.RemoveByPatternAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.RedisCacheManager.ExistsAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.RedisCacheManager.ClearAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.RedisCacheManager.GetOrSetAsync``1(System.String,System.Func{System.Threading.Tasks.Task{``0}},System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.RedisCacheManager.GetPrefixedKey(System.String)">
+            <summary>
+            Gets the Redis key with the configured prefix.
+            </summary>
+            <param name="key">The original key.</param>
+            <returns>The prefixed key.</returns>
+        </member>
+        <member name="M:NSCatch.Implementations.RedisCacheManager.ThrowIfDisposed">
+            <summary>
+            Throws an exception if the object has been disposed.
+            </summary>
+        </member>
+        <member name="M:NSCatch.Implementations.RedisCacheManager.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:NSCatch.Implementations.ServiceSpecificCacheKeyBuilder">
+            <summary>
+            Cache key builder with service-specific prefixes to prevent key collisions between services.
+            </summary>
+        </member>
+        <member name="M:NSCatch.Implementations.ServiceSpecificCacheKeyBuilder.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the ServiceSpecificCacheKeyBuilder.
+            </summary>
+            <param name="servicePrefix">The service-specific prefix for cache keys.</param>
+        </member>
+        <member name="M:NSCatch.Implementations.ServiceSpecificCacheKeyBuilder.BuildKey``1(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.ServiceSpecificCacheKeyBuilder.BuildKey(System.String,System.Object[])">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.ServiceSpecificCacheKeyBuilder.BuildPattern``1">
+            <inheritdoc />
+        </member>
+        <member name="M:NSCatch.Implementations.ServiceSpecificCacheKeyBuilder.BuildPattern(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:NSCatch.Interfaces.ICacheKeyBuilder">
+            <summary>
+            Interface for building type-safe cache keys.
+            </summary>
+        </member>
+        <member name="M:NSCatch.Interfaces.ICacheKeyBuilder.BuildKey``1(System.Object)">
+            <summary>
+            Builds a cache key for a specific entity type and identifier.
+            </summary>
+            <typeparam name="T">The entity type.</typeparam>
+            <param name="id">The entity identifier.</param>
+            <returns>The cache key.</returns>
+        </member>
+        <member name="M:NSCatch.Interfaces.ICacheKeyBuilder.BuildKey(System.String,System.Object[])">
+            <summary>
+            Builds a cache key with a custom prefix and parameters.
+            </summary>
+            <param name="prefix">The key prefix.</param>
+            <param name="parameters">The key parameters.</param>
+            <returns>The cache key.</returns>
+        </member>
+        <member name="M:NSCatch.Interfaces.ICacheKeyBuilder.BuildPattern``1">
+            <summary>
+            Builds a pattern for removing multiple keys.
+            </summary>
+            <typeparam name="T">The entity type.</typeparam>
+            <returns>The cache key pattern.</returns>
+        </member>
+        <member name="M:NSCatch.Interfaces.ICacheKeyBuilder.BuildPattern(System.String)">
+            <summary>
+            Builds a pattern with a custom prefix.
+            </summary>
+            <param name="prefix">The pattern prefix.</param>
+            <returns>The cache key pattern.</returns>
+        </member>
+        <member name="T:NSCatch.Interfaces.ICacheManager">
+            <summary>
+            Defines the contract for cache management operations.
+            </summary>
+        </member>
+        <member name="M:NSCatch.Interfaces.ICacheManager.GetAsync``1(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets a cached value by key.
+            </summary>
+            <typeparam name="T">The type of the cached value.</typeparam>
+            <param name="key">The cache key.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>The cached value or null if not found.</returns>
+        </member>
+        <member name="M:NSCatch.Interfaces.ICacheManager.SetAsync``1(System.String,``0,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
+            <summary>
+            Sets a value in the cache with an optional expiration time.
+            </summary>
+            <typeparam name="T">The type of the value to cache.</typeparam>
+            <param name="key">The cache key.</param>
+            <param name="value">The value to cache.</param>
+            <param name="expiration">Optional expiration time.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>A task representing the operation.</returns>
+        </member>
+        <member name="M:NSCatch.Interfaces.ICacheManager.RemoveAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Removes a cached value by key.
+            </summary>
+            <param name="key">The cache key.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>A task representing the operation.</returns>
+        </member>
+        <member name="M:NSCatch.Interfaces.ICacheManager.RemoveByPatternAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Removes all cached values matching a pattern.
+            </summary>
+            <param name="pattern">The pattern to match keys (supports wildcards like *).</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>A task representing the operation.</returns>
+        </member>
+        <member name="M:NSCatch.Interfaces.ICacheManager.ExistsAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Checks if a key exists in the cache.
+            </summary>
+            <param name="key">The cache key.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>True if the key exists, false otherwise.</returns>
+        </member>
+        <member name="M:NSCatch.Interfaces.ICacheManager.ClearAsync(System.Threading.CancellationToken)">
+            <summary>
+            Clears all cached values.
+            </summary>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>A task representing the operation.</returns>
+        </member>
+        <member name="M:NSCatch.Interfaces.ICacheManager.GetOrSetAsync``1(System.String,System.Func{System.Threading.Tasks.Task{``0}},System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
+            <summary>
+            Gets or sets a cached value with a factory function.
+            </summary>
+            <typeparam name="T">The type of the cached value.</typeparam>
+            <param name="key">The cache key.</param>
+            <param name="factory">Factory function to create the value if not cached.</param>
+            <param name="expiration">Optional expiration time.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>The cached or newly created value.</returns>
+        </member>
+        <member name="T:NSCatch.Interfaces.ICatchOption">
+            <summary>
+            Common interface for all cache configuration options.
+            </summary>
+        </member>
+        <member name="P:NSCatch.Interfaces.ICatchOption.DefaultExpiration">
+            <summary>
+            Default expiration time for cached items in this configuration.
+            </summary>
+        </member>
+        <member name="M:NSCatch.Interfaces.ICatchOption.IsValid">
+            <summary>
+            Validates the configuration settings.
+            </summary>
+            <returns>True if the configuration is valid, false otherwise.</returns>
+        </member>
+        <member name="M:NSCatch.Interfaces.ICatchOption.GetDescription">
+            <summary>
+            Gets a description of this cache configuration.
+            </summary>
+            <returns>A human-readable description of the configuration.</returns>
+        </member>
+    </members>
+</doc>
