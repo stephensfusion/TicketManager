@@ -1,0 +1,34 @@
+<Repositories>
+	<!-- <Repository>
+        <Name>NSCore</Name>
+        <Branch>main</Branch>
+    </Repository>
+	<Repository>
+        <Name>NSLogger</Name>
+        <Branch>redesign</Branch>  Empty branch defaults to main if not specified 
+    </Repository>
+    <Repository>
+        <Name>StateManager</Name>
+        <Branch>main</Branch>
+    </Repository>
+	<Repository>
+        <Name>UserManager</Name>
+        <Branch>main</Branch>
+    </Repository>
+    <Repository>
+        <Name>GroupManager</Name>
+        <Branch>main</Branch>
+    </Repository>
+	<Repository>
+		<Name>FieldOptionsManager</Name>
+		<Branch>main</Branch>
+	</Repository>
+	<Repository>
+		<Name>ActionRecordManager</Name>
+		<Branch>main</Branch>
+	</Repository> -->
+    <Repository>
+		<Name>NSCatch</Name>
+		<Branch>main</Branch>
+	</Repository>
+</Repositories>

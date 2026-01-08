@@ -1,0 +1,11 @@
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace ServicesUnitTest.Pages
+{
+    public class LoginModel : PageModel
+    {
+        public void OnGet()
+        {
+        }
+    }
+}
